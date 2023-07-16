@@ -513,7 +513,13 @@ mark,
 
 .img-fluid {
   max-width: 100%;
+  max-height: 310px;
   height: auto;
+}
+
+.img-fl {
+  width: 100px;
+  height: 80px;
 }
 
 .img-thumbnail {
