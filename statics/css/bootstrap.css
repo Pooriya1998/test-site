@@ -521,6 +521,11 @@ mark,
   height: 80px;
 }
 
+.img-fl2 {
+  max-width: 100%;
+  height: 250px;
+}
+
 .img-thumbnail {
   padding: 0.25rem;
   background-color: #fff;
