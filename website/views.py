@@ -18,8 +18,8 @@ def contact_view(request):
             form_p = form.save(commit=False)
             form_p.name = 'anonymous'
             form_p.save()
-
             messages.add_message(request, messages.SUCCESS, "your ticket submited seccessfuly")
+
         else:
             messages.add_message(request, messages.ERROR, "your ticket didn't submited")
     form = ContactForm()

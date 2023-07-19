@@ -3,9 +3,10 @@ from website.models import Contact, Newsletter
 
 
 class NameForm(forms.Form):
+    name = forms.CharField(max_length=255)
     email = forms.EmailField()
-    subject = forms.CharField(max_length=255)
     message = forms.CharField(widget=forms.Textarea)
+    subject = forms.CharField(max_length=255,  required=False)
 
 
 class ContactForm(forms.ModelForm):
