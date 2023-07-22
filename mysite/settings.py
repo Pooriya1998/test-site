@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'django.contrib.sites',
     'django.contrib.sitemaps',
+    'captcha',
     'robots',
     'debug_toolbar',
     'taggit',
