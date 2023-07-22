@@ -1,4 +1,5 @@
 {% load static %}
+{% load blog_tags %}
 <section class="post-content-area single-post-area">
 	<div class="container">
 		<div class="row">
@@ -198,7 +199,44 @@
 								</form>
 							</div>
 						</div>
-			{% include 'blog/sidebar-widgets/sidebar-widgets.html' %}
-		</div>
-	</div>
+							<div class="col-lg-4 sidebar-widgets">
+								<div class="widget-wrap">
+								   <div class="single-sidebar-widget search-widget">
+									  <form class="search-form" action="{% url 'blog:search' %}">
+										 <input placeholder="Search Posts" name="s" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'" >
+										 <button type="submit"><i class="fa fa-search"></i></button>
+									  </form>
+								   </div>
+								   {% lastestposts %}
+								   <div class="single-sidebar-widget ads-widget">
+									  <a href="#"><img class="img-fluid" src="{% static 'img/blog/ads-banner.jpg' %}" alt=""></a>
+								   </div>
+								   {% postcategories %}
+								   <div class="single-sidebar-widget newsletter-widget">
+									  <h4 class="newsletter-title">Newsletter</h4>
+									  <p>
+										 Here, I focus on a range of items and features that we use in life without
+										 giving them a second thought.
+									  </p>
+									  <div class="form-group d-flex flex-row">
+										 <div class="col-autos">
+											<div class="input-group">
+											   <div class="input-group-prepend">
+												  <div class="input-group-text"><i class="fa fa-envelope" aria-hidden="true"></i>
+												  </div>
+											   </div>
+											   <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Enter email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email'" >
+											</div>
+										 </div>
+										 <a href="#" class="bbtns">Subcribe</a>
+									  </div>
+									  <p class="text-bottom">
+										 You can unsubscribe at any time
+									  </p>
+								   </div>
+									 {% include 'blog/blog-single/blog-tags.html' %}
+								</div>
+							</div>
+						</div>
+			</div>
 </section>
