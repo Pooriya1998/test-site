@@ -1,7 +1,12 @@
 from django import template
-from blog.models import Post, Category
+from blog.models import Post, Category, Comment
 
 register = template.Library()
+
+
+@register.simple_tag(name='comments_count')
+def function(pid):
+    return Comment.objects.filter(post=pid, approved=True).count()
 
 
 @register.inclusion_tag('blog/sidebar-widgets/single-post-list.html')

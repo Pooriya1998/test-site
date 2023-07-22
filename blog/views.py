@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from blog.models import Post, Category
+from blog.models import Post, Category, Comment
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import datetime
 from blog.management import *
@@ -65,9 +65,11 @@ def blog_single_view(request, pid):
         previous_post = posts_list[index_post - 1]
 
     all_cats = Category.objects.all()
+    comments = Comment.objects.filter(post=post.id, approved=True)
     context = {'post': post, 'all_cats': all_cats,
                'next_post': next_post, 'has_next_post': has_next_post,
-               'previous_post': previous_post, 'has_previous_post': has_previous_post}
+               'previous_post': previous_post, 'has_previous_post': has_previous_post,
+               'comments': comments}
     return render(request, 'blog/blog-single/blog-single.html', context)
 
 
