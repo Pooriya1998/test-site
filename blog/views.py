@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from blog.models import Post, Category, Comment
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from blog.forms import CommentForm
+from django.contrib import messages
 import datetime
 from blog.management import *
 
@@ -31,6 +33,13 @@ def blog_view(request, **kwargs):
 
 
 def blog_single_view(request, pid):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, "Your comment will be shown if approved")
+        else:
+            messages.add_message(request, messages.ERROR, "your comment didn't submited")
     # In this section, a number is added to the view variable for each view.
     add_counted_views(pid)
     # In this section, a complete list of posts is prepared
@@ -66,10 +75,11 @@ def blog_single_view(request, pid):
 
     all_cats = Category.objects.all()
     comments = Comment.objects.filter(post=post.id, approved=True)
+    form = CommentForm()
     context = {'post': post, 'all_cats': all_cats,
                'next_post': next_post, 'has_next_post': has_next_post,
                'previous_post': previous_post, 'has_previous_post': has_previous_post,
-               'comments': comments}
+               'comments': comments, 'form': form}
     return render(request, 'blog/blog-single/blog-single.html', context)
 
 
