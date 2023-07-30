@@ -1,8 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from blog.models import Post, Category, Comment
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from blog.forms import CommentForm
 from django.contrib import messages
+from django.urls import reverse, resolve, Resolver404
+from django.http import HttpResponseRedirect
 import datetime
 from blog.management import *
 
@@ -73,14 +75,29 @@ def blog_single_view(request, pid):
         has_previous_post = True
         previous_post = posts_list[index_post - 1]
 
-    all_cats = Category.objects.all()
-    comments = Comment.objects.filter(post=post.id, approved=True)
-    form = CommentForm()
-    context = {'post': post, 'all_cats': all_cats,
-               'next_post': next_post, 'has_next_post': has_next_post,
-               'previous_post': previous_post, 'has_previous_post': has_previous_post,
-               'comments': comments, 'form': form}
-    return render(request, 'blog/blog-single/blog-single.html', context)
+    if not post.login_require:
+        all_cats = Category.objects.all()
+        comments = Comment.objects.filter(post=post.id, approved=True)
+        form = CommentForm()
+        context = {'post': post, 'all_cats': all_cats,
+                   'next_post': next_post, 'has_next_post': has_next_post,
+                   'previous_post': previous_post, 'has_previous_post': has_previous_post,
+                   'comments': comments, 'form': form}
+        return render(request, 'blog/blog-single/blog-single.html', context)
+
+    elif request.user.is_authenticated:
+        all_cats = Category.objects.all()
+        comments = Comment.objects.filter(post=post.id, approved=True)
+        form = CommentForm()
+        context = {'post': post, 'all_cats': all_cats,
+                   'next_post': next_post, 'has_next_post': has_next_post,
+                   'previous_post': previous_post, 'has_previous_post': has_previous_post,
+                   'comments': comments, 'form': form}
+        return render(request, 'blog/blog-single/blog-single.html', context)
+
+    else:
+        return HttpResponseRedirect('{}?next={}{}'.format(reverse('accounts:login'), reverse('blog:index'), post.id))
+
 
 
 def blog_search(request):
